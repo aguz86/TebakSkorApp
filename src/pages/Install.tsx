@@ -19,11 +19,13 @@ export default function Install({ onComplete }: { onComplete: () => void }) {
     }
 
     setIsSubmitting(true);
+    setError(null);
     try {
       if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
         throw new Error('Supabase URL atau Anon Key belum dikonfigurasi di environment variables.');
       }
-      // Create settings in Supabase
+
+      // 1. Create settings in Supabase
       const success = await supabaseService.saveConfig({
         webName,
         adminEmail,
@@ -32,6 +34,48 @@ export default function Install({ onComplete }: { onComplete: () => void }) {
         installedAt: new Date().toISOString(),
       });
       if (!success) throw new Error('Gagal menyimpan konfigurasi ke Supabase. Pastikan tabel "settings" sudah dibuat.');
+
+      // 2. Create Admin Auth User
+      // We use signUp. If the user already exists, it might return an error depending on Supabase settings.
+      const { data: authData, error: authError } = await (await import('../supabase')).supabase.auth.signUp({
+        email: adminEmail,
+        password: adminPassword,
+        options: {
+          data: { username: adminName }
+        }
+      });
+
+      if (authError) {
+        // If user already exists, we might get an error. We can ignore it if we just want to ensure the profile exists.
+        if (authError.message.includes('already registered')) {
+          console.log('Admin user already exists in Auth');
+        } else {
+          throw authError;
+        }
+      }
+
+      // 3. Create/Update User Profile in 'users' table
+      // If signUp was successful or user already existed, we try to ensure they have the admin role.
+      // Note: If signUp succeeded, authData.user will be present.
+      // If it failed because user exists, we might not have the ID here unless we sign in.
+      // But usually, the first install is a clean slate.
+      
+      if (authData?.user) {
+        const { error: profileError } = await (await import('../supabase')).supabase
+          .from('users')
+          .upsert([{
+            uid: authData.user.id,
+            username: adminName,
+            email: adminEmail,
+            role: 'admin',
+            balance: 0
+          }]);
+        
+        if (profileError) {
+          console.error('Error creating admin profile:', profileError);
+          // We don't throw here because settings were saved, but we warn
+        }
+      }
 
       onComplete();
     } catch (err: any) {

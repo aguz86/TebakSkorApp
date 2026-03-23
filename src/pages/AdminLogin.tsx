@@ -23,11 +23,40 @@ export default function AdminLogin({ webName }: { webName: string }) {
         password,
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message === 'Invalid login credentials') {
+          throw new Error('Email atau password salah. Jika Anda baru saja menginstal, pastikan Anda sudah mendaftar (Sign Up) di halaman login utama menggunakan email admin ini.');
+        }
+        if (authError.message?.toLowerCase().includes('confirm')) {
+          throw new Error('Email admin belum dikonfirmasi. Silakan cek email Anda atau nonaktifkan "Confirm Email" di dashboard Supabase (Authentication -> Providers -> Email).');
+        }
+        throw authError;
+      }
       
       if (data.user) {
+        // Fetch config to check admin email
+        const config = await supabaseService.getConfig();
+        const adminEmail = config?.adminEmail || '';
+
         // Check if user is admin in Database
-        const userProfile = await supabaseService.getUserProfile(data.user.id);
+        let userProfile = await supabaseService.getUserProfile(data.user.id);
+
+        // If profile doesn't exist but email matches adminEmail, create it
+        if (!userProfile && data.user.email === adminEmail) {
+          const { error: profileError } = await supabase
+            .from('users')
+            .insert([{
+              uid: data.user.id,
+              username: data.user.user_metadata?.username || 'Admin',
+              email: data.user.email,
+              role: 'admin',
+              balance: 0
+            }]);
+          
+          if (!profileError) {
+            userProfile = await supabaseService.getUserProfile(data.user.id);
+          }
+        }
 
         if (userProfile && userProfile.role === 'admin') {
           // Refresh page to trigger App.tsx auth check

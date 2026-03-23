@@ -21,26 +21,26 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * -- Matches Table
  * create table matches (
  *   id uuid default gen_random_uuid() primary key,
- *   teamA text not null,
- *   logoA text,
- *   teamB text not null,
- *   logoB text,
+ *   teama text not null,
+ *   logoa text,
+ *   teamb text not null,
+ *   logob text,
  *   status text check (status in ('open', 'closed')) default 'open',
- *   resultA int,
- *   resultB int,
+ *   resulta int,
+ *   resultb int,
  *   deadline timestamp with time zone not null,
- *   totalPrize bigint default 50000,
- *   winnerCount int default 1,
+ *   totalprize bigint default 50000,
+ *   winnercount int default 1,
  *   created_at timestamp with time zone default timezone('utc'::text, now())
  * );
  * 
  * -- Predictions Table
  * create table predictions (
  *   id uuid default gen_random_uuid() primary key,
- *   userId text references users(uid),
- *   matchId uuid references matches(id),
- *   scoreA int not null,
- *   scoreB int not null,
+ *   userid text references users(uid),
+ *   matchid uuid references matches(id),
+ *   scorea int not null,
+ *   scoreb int not null,
  *   status text check (status in ('pending', 'won', 'lost')) default 'pending',
  *   created_at timestamp with time zone default timezone('utc'::text, now())
  * );
@@ -48,7 +48,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * -- Withdrawals Table
  * create table withdrawals (
  *   id uuid default gen_random_uuid() primary key,
- *   userId text references users(uid),
+ *   userid text references users(uid),
  *   amount bigint not null,
  *   status text check (status in ('pending', 'approved', 'rejected')) default 'pending',
  *   created_at timestamp with time zone default timezone('utc'::text, now())
@@ -57,11 +57,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * -- Settings Table
  * create table settings (
  *   id text primary key default 'config',
- *   webName text not null,
- *   adminEmail text not null,
- *   adminPassword text,
- *   isInstalled boolean default true,
- *   installedAt timestamp with time zone default timezone('utc'::text, now())
+ *   webname text not null,
+ *   adminemail text not null,
+ *   adminpassword text,
+ *   isinstalled boolean default true,
+ *   installedat timestamp with time zone default timezone('utc'::text, now())
  * );
  * 
  * -- RLS POLICIES (Run these in Supabase SQL Editor)

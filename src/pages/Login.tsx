@@ -60,7 +60,13 @@ export default function Login({ webName }: { webName: string }) {
     } catch (err: any) {
       console.error('Auth error:', err);
       if (err.code === '23505') setError('Email sudah terdaftar');
-      else if (err.status === 400) setError('Email atau password salah');
+      else if (err.status === 400) {
+        if (err.message?.toLowerCase().includes('confirm')) {
+          setError('Email belum dikonfirmasi. Silakan cek kotak masuk email Anda atau hubungi admin untuk menonaktifkan konfirmasi email di Supabase.');
+        } else {
+          setError('Email atau password salah');
+        }
+      }
       else setError(err.message || 'Terjadi kesalahan');
     } finally {
       setLoading(false);
