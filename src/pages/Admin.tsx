@@ -336,12 +336,26 @@ export default function Admin({ webName }: { webName: string }) {
                     </div>
 
                     <div className="flex items-center justify-center gap-8">
-                      <div className="text-center flex-1">
-                        <p className="text-lg font-black text-white">{match.teamA}</p>
+                      <div className="text-center flex-1 space-y-2">
+                        <div className="w-12 h-12 bg-zinc-800 rounded-xl mx-auto flex items-center justify-center ring-1 ring-white/5 overflow-hidden">
+                          {match.logoA ? (
+                            <img src={match.logoA} alt={match.teamA} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          ) : (
+                            <span className="text-xl font-black text-zinc-500">{match.teamA[0]}</span>
+                          )}
+                        </div>
+                        <p className="text-sm font-black text-white truncate">{match.teamA}</p>
                       </div>
                       <div className="text-2xl font-black text-zinc-700 italic">VS</div>
-                      <div className="text-center flex-1">
-                        <p className="text-lg font-black text-white">{match.teamB}</p>
+                      <div className="text-center flex-1 space-y-2">
+                        <div className="w-12 h-12 bg-zinc-800 rounded-xl mx-auto flex items-center justify-center ring-1 ring-white/5 overflow-hidden">
+                          {match.logoB ? (
+                            <img src={match.logoB} alt={match.teamB} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          ) : (
+                            <span className="text-xl font-black text-zinc-500">{match.teamB[0]}</span>
+                          )}
+                        </div>
+                        <p className="text-sm font-black text-white truncate">{match.teamB}</p>
                       </div>
                     </div>
 

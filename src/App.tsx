@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import AdminLogin from './pages/AdminLogin';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Install from './pages/Install';
 import { LogOut, Shield, Trophy } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -178,6 +180,8 @@ export default function App() {
           <Routes>
             <Route path="/login" element={!user ? <Login webName={webName} /> : <Navigate to="/" />} />
             <Route path="/admin/login" element={!user ? <AdminLogin webName={webName} /> : (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/" />)} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/" element={user ? <Home user={user} webName={webName} /> : <Navigate to="/login" />} />
             <Route path="/admin" element={user?.role === 'admin' ? <Admin webName={webName} /> : <Navigate to="/admin/login" />} />
           </Routes>

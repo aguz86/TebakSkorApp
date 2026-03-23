@@ -361,6 +361,13 @@ export default function Home({ user, webName }: HomeProps) {
 
                 <div className="flex items-center justify-center gap-8">
                   <div className="space-y-4 flex-1">
+                    <div className="w-20 h-20 bg-zinc-800 rounded-3xl mx-auto flex items-center justify-center ring-1 ring-white/5 overflow-hidden">
+                      {predictingMatch.logoA ? (
+                        <img src={predictingMatch.logoA} alt={predictingMatch.teamA} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      ) : (
+                        <span className="text-3xl font-black text-zinc-500">{predictingMatch.teamA[0]}</span>
+                      )}
+                    </div>
                     <p className="text-xs font-black uppercase tracking-widest text-zinc-500">{predictingMatch.teamA}</p>
                     <input
                       type="number"
@@ -369,8 +376,15 @@ export default function Home({ user, webName }: HomeProps) {
                       className="w-full bg-zinc-800 border-2 border-white/5 rounded-3xl py-6 text-center text-4xl font-black text-white focus:border-emerald-500 outline-none transition-all"
                     />
                   </div>
-                  <div className="text-4xl font-black text-zinc-700 pt-8">:</div>
+                  <div className="text-4xl font-black text-zinc-700 pt-20">:</div>
                   <div className="space-y-4 flex-1">
+                    <div className="w-20 h-20 bg-zinc-800 rounded-3xl mx-auto flex items-center justify-center ring-1 ring-white/5 overflow-hidden">
+                      {predictingMatch.logoB ? (
+                        <img src={predictingMatch.logoB} alt={predictingMatch.teamB} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      ) : (
+                        <span className="text-3xl font-black text-zinc-500">{predictingMatch.teamB[0]}</span>
+                      )}
+                    </div>
                     <p className="text-xs font-black uppercase tracking-widest text-zinc-500">{predictingMatch.teamB}</p>
                     <input
                       type="number"

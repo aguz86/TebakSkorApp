@@ -200,22 +200,32 @@ export default function Login({ webName }: { webName: string }) {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-white/5 text-center space-y-4">
-            <button
-              onClick={() => setIsRegistering(!isRegistering)}
-              className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-            >
-              {isRegistering ? 'Sudah punya akun? Masuk' : 'Belum punya akun? Daftar'}
-            </button>
-            <div className="pt-2">
-              <Link 
-                to="/admin/login" 
-                className="text-[10px] font-black text-zinc-600 hover:text-blue-500 uppercase tracking-[0.2em] transition-colors"
-              >
-                Admin Login
-              </Link>
+            <div className="mt-8 pt-8 border-t border-white/5 text-center space-y-6">
+              <div className="flex flex-col gap-4">
+                <button
+                  onClick={() => setIsRegistering(!isRegistering)}
+                  className="w-full py-3 px-4 bg-zinc-800/50 hover:bg-zinc-800 text-sm font-bold text-zinc-300 hover:text-white rounded-xl transition-all border border-white/5 active:scale-[0.98]"
+                >
+                  {isRegistering ? 'Sudah punya akun? Masuk Sekarang' : 'Belum punya akun? Daftar Gratis'}
+                </button>
+                
+                <Link 
+                  to="/forgot-password" 
+                  className="inline-block py-2 text-sm font-bold text-emerald-500 hover:text-emerald-400 transition-colors"
+                >
+                  Lupa Password?
+                </Link>
+              </div>
+
+              <div className="pt-2">
+                <Link 
+                  to="/admin/login" 
+                  className="inline-block py-3 px-6 text-[10px] font-black text-zinc-600 hover:text-blue-500 uppercase tracking-[0.2em] transition-colors hover:bg-blue-500/5 rounded-lg"
+                >
+                  Admin Login
+                </Link>
+              </div>
             </div>
-          </div>
         </div>
 
         <p className="text-xs text-zinc-500 font-medium">

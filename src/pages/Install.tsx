@@ -73,11 +73,43 @@ export default function Install({ onComplete }: { onComplete: () => void }) {
         
         if (profileError) {
           console.error('Error creating admin profile:', profileError);
-          // We don't throw here because settings were saved, but we warn
         }
       }
 
-      onComplete();
+      // 4. Send Real Confirmation Email via Resend
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: adminEmail,
+            subject: `Instalasi ${webName} Berhasil!`,
+            html: `
+              <div style="font-family: sans-serif; padding: 20px; color: #333;">
+                <h1 style="color: #10b981;">Instalasi Berhasil!</h1>
+                <p>Halo <strong>${adminName}</strong>,</p>
+                <p>Aplikasi <strong>${webName}</strong> Anda telah berhasil diinstal.</p>
+                <p><strong>Detail Admin:</strong></p>
+                <ul>
+                  <li>Email: ${adminEmail}</li>
+                  <li>Password: (Sesuai yang Anda masukkan)</li>
+                </ul>
+                <p>Silakan login ke portal admin untuk mulai mengelola pertandingan.</p>
+                <br/>
+                <p>Salam,<br/>Sistem Instalasi</p>
+              </div>
+            `
+          })
+        });
+        setError('Instalasi Berhasil! Email konfirmasi telah dikirim ke email admin. Mengalihkan...');
+      } catch (emailErr) {
+        console.error('Email error:', emailErr);
+        setError('Instalasi Berhasil! Namun gagal mengirim email konfirmasi. Silakan cek dashboard Supabase.');
+      }
+
+      setTimeout(() => {
+        onComplete();
+      }, 3000);
     } catch (err: any) {
       console.error('Installation error:', err);
       setError(err.message || 'Gagal melakukan instalasi. Pastikan konfigurasi backend sudah benar.');

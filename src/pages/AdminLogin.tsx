@@ -84,13 +84,15 @@ export default function AdminLogin({ webName }: { webName: string }) {
         animate={{ opacity: 1, scale: 1 }}
         className="max-w-md w-full space-y-8"
       >
-        <div className="text-center space-y-4">
-          <Link 
-            to="/login" 
-            className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest mb-4"
-          >
-            <ChevronLeft className="w-4 h-4" /> Kembali ke User Login
-          </Link>
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <Link 
+              to="/login" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-all text-xs font-black uppercase tracking-[0.2em] rounded-2xl border border-white/5 shadow-lg active:scale-95"
+            >
+              <ChevronLeft className="w-4 h-4" /> Kembali ke User Login
+            </Link>
+          </div>
           
           <div className="flex justify-center">
             <div className="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20 shadow-2xl shadow-blue-500/10">
@@ -172,6 +174,15 @@ export default function AdminLogin({ webName }: { webName: string }) {
               )}
             </button>
           </form>
+
+          <div className="mt-6 text-center">
+            <Link 
+              to="/forgot-password" 
+              className="text-xs font-bold text-blue-500 hover:text-blue-400 uppercase tracking-widest transition-colors"
+            >
+              Lupa Password Admin?
+            </Link>
+          </div>
         </div>
 
         <p className="text-center text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em]">
